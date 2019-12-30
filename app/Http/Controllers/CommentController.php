@@ -82,4 +82,18 @@ class CommentController extends Controller
     {
         //
     }
+
+    public function commentsByPostId()
+    {
+        # code...
+    }
+
+    public function commentsByUsername()
+    {
+        # code...
+    }
+    public function like(Post $post)
+    {
+        //
+    }
 }

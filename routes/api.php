@@ -15,59 +15,58 @@ use Illuminate\Http\Request;
 
 Route::post('/register', 'Auth\RegisterController@create');
 Route::post('/login', 'Auth\LoginController@login');
+Route::middleware('auth:api')->post('/logout', 'Auth\LoginController@logout');
+
+
 Route::group([
     'middleware' => 'auth:api'
   ], function() {
-    Route::post('/logout', 'Auth\LoginController@logout');
-  });
-
-
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
+    
 //USERS
-Route::get('/user/{username}', 'UserController@index');
-Route::put('/user/{username}', 'UserController@index');       /*controlled*/
-Route::patch('/user/{username}', 'UserController@index');     /*controlled*/
-Route::delete('/user/{username}', 'UserController@index');    /*controlled*/
+Route::get('/user/{username}', 'UserController@show');
+Route::put('/user/{username}', 'UserController@update');       /*controlled*/
+Route::patch('/user/{username}', 'UserController@edit');     /*controlled*/
+Route::delete('/user/{username}', 'UserController@destroy');    /*controlled*/
 
 
 //TAGS
-Route::post('/tag/{name}', 'TagController@index');
+Route::post('/tag/{name}', 'TagController@create');
 
 
 //POSTS
-Route::get('/post/{id}', 'PostController@index');
-Route::post('/post', 'PostController@index');
-Route::put('/post/{id}', 'PostController@index');     /*controlled*/
-Route::patch('/post/{id}', 'PostController@index');   /*controlled*/
-Route::delete('/post/{id}', 'PostController@index');  /*controlled*/
+Route::get('/post/{id}', 'PostController@show');
+Route::post('/post', 'PostController@create');
+Route::put('/post/{id}', 'PostController@update');     /*controlled*/
+Route::patch('/post/{id}', 'PostController@edit');   /*controlled*/
+Route::delete('/post/{id}', 'PostController@destroy');  /*controlled*/
 
-Route::get('/posts/tag/{name}', 'PostController@index'); // all posts with tag{name}
-Route::get('/user/{username}/posts', 'PostController@index');// all posts by {username}
+Route::get('/posts/tag/{name}', 'PostController@postsByTagName'); // all posts with tag{name}
+Route::get('/user/{username}/posts', 'PostController@postsByUsername');// all posts by {username}
 
 
 //COMMENTS
-Route::get('/comment/{id}', 'CommentController@index');
-Route::get('/post/{id}/comments', 'CommentController@index');
-Route::get('/user/{username}/comments', 'CommentController@index');
-Route::delete('/comment/{id}', 'CommentController@index');    /*controlled*/
+Route::get('/comment/{id}', 'CommentController@show');
+Route::get('/post/{id}/comments', 'CommentController@commentsByPostId');
+Route::get('/user/{username}/comments', 'CommentController@commentsByUsername');
+Route::delete('/comment/{id}', 'CommentController@destroy');    /*controlled*/
 
 
 //ACTIONS
-Route::post('/post/{id}/like', 'PostController@index');
-Route::post('/comment/{id}/like', 'CommentController@index');
+Route::post('/post/{id}/like', 'PostController@like');
+Route::post('/comment/{id}/like', 'CommentController@like');
 
-Route::post('/user/{username}/follow', 'UserController@index');
-Route::post('/user/{username}/unfollow', 'UserController@index');
+Route::post('/user/{username}/follow', 'UserController@follow');
+Route::post('/user/{username}/unfollow', 'UserController@unfollow');
 
-Route::post('/post/{id}/comment', 'CommentController@index');
+Route::post('/post/{id}/comment', 'CommentController@store');
 
 
 //ADMIN -- It's an admin thing, you wouldn't understand
-Route::delete('/posts/tag/{name}', 'PostController@index'); // deletes all posts with the tag {name}
-Route::delete('/tag/{name}', 'TagController@index'); // delete from the tagging table too
+Route::delete('/posts/tag/{name}', 'PostController@destroyByTagName'); // deletes all posts with the tag {name}
+Route::delete('/tag/{name}', 'TagController@destroy'); // delete from the tagging table too
 Route::get('/users', 'UserController@index');
 Route::get('/posts', 'PostController@index');
 Route::get('/tags', 'TagController@index');
+
+
+});

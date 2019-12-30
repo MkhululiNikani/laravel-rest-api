@@ -81,4 +81,14 @@ class UserController extends Controller
     {
         //
     }
+
+    public function follow()
+    {
+        # code...
+    }
+    
+    public function unfollow()
+    {
+        # code...
+    }
 }

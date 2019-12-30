@@ -82,4 +82,17 @@ class PostController extends Controller
     {
         //
     }
+    
+    public function postsByTagName(Post $post)
+    {
+        //
+    }
+    public function like(Post $post)
+    {
+        //
+    }
+    public function destroyByTagName()
+    {
+        # code...
+    }
 }
