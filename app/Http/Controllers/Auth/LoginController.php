@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\User;
+use App\Http\Resources\UserResource;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
@@ -36,5 +39,31 @@ class LoginController extends Controller
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
+    }
+
+    public function Login(Request $request)
+    {
+        $credentials = [
+            'email' => $request->email,
+            'password' => $request->password
+        ];
+ 
+        if (auth()->attempt($credentials)) {
+            $user = User::where('email', $request->email)->first();
+            $token = auth()->user()->createToken('Personal_Access_Client_01')->accessToken;
+            $user->api_token = $token;
+            return new UserResource($user);
+        } else {
+            return abort(401, 'incorrect email or password');
+        }
+        
+    }
+    public function Logout(Request $request)
+    {
+        $request->user()->token()->revoke();        
+        
+        return response()->json([
+            'message' => 'Successfully logged out'
+        ]);
     }
 }

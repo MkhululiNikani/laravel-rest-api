@@ -21,7 +21,7 @@ class CreateUsersTable extends Migration
             $table->integer('posts')->default('0');
             $table->integer('followers')->default('0');
             $table->integer('following')->default('0');
-            $table->string('status');
+            $table->string('status')->nullable();
             $table->string('profile_picture_url')->nullable();
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
