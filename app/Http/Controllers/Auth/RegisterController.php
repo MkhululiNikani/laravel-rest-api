@@ -68,19 +68,19 @@ class RegisterController extends Controller
      */
     protected function create(Request $request)
     {
-        if(User::where('email', $request->input('email'))->first()){
-            abort(200, 'email already exists');
+        if(User::where('email', $request->email)->first()){
+            abort(409, 'Email already exists');
         } 
-        if(User::where('username', $request->input('username'))->first()){
-            abort(200, 'username already exists');
+        if(User::where('username', $request->username)->first()){
+            abort(409, 'Username already exists');
         } 
         
         $user = User::create([
-            'firstname' => $request->input('firstname'),
-            'lastname' => $request->input('lastname'),
-            'username' => $request->input('username'),
-            'email' => $request->input('email'),
-            'password' => Hash::make($request->input('password'))
+            'firstname' => $request->firstname,
+            'lastname' => $request->lastname,
+            'username' => $request->username,
+            'email' => $request->email,
+            'password' => Hash::make($request->password)
         ]);
 
         $this->guard()->login($user);

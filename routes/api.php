@@ -13,9 +13,9 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::post('/register', 'Auth\RegisterController@create');
-Route::post('/login', 'Auth\LoginController@login');
-Route::middleware('auth:api')->post('/logout', 'Auth\LoginController@logout');
+Route::post('/register', 'Auth\RegisterController@create')->name('register');
+Route::post('/login', 'Auth\LoginController@login')->name('login');
+Route::middleware('auth:api')->post('/logout', 'Auth\LoginController@logout')->name('logout');
 
 
 Route::group([
@@ -61,7 +61,7 @@ Route::post('/user/{username}/unfollow', 'UserController@unfollow');
 Route::post('/post/{id}/comment', 'CommentController@store');
 
 
-//ADMIN -- It's an admin thing, you wouldn't understand
+//ADMIN   --   It's an admin thing, you wouldn't understand
 Route::delete('/posts/tag/{name}', 'PostController@destroyByTagName'); // deletes all posts with the tag {name}
 Route::delete('/tag/{name}', 'TagController@destroy'); // delete from the tagging table too
 Route::get('/users', 'UserController@index');

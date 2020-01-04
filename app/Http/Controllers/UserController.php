@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\User;
+use App\Http\Resources\UserResource;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -23,7 +25,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
+        
     }
 
     /**
@@ -43,9 +45,16 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($username)
     {
-        //
+        if(!User::where('username', $username)->first()){
+            return abort(404, 'User not found');
+        }
+        
+        $user = User::where('username', $username)->first();
+        UserResource::withoutWrapping();
+         
+        return new UserResource($user);
     }
 
     /**
@@ -82,9 +91,9 @@ class UserController extends Controller
         //
     }
 
-    public function follow()
+    public function follow($username)
     {
-        # code...
+        
     }
     
     public function unfollow()

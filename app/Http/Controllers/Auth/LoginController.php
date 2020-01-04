@@ -48,14 +48,16 @@ class LoginController extends Controller
             'password' => $request->password
         ];
  
-        if (auth()->attempt($credentials)) {
-            $user = User::where('email', $request->email)->first();
-            $token = auth()->user()->createToken('Personal_Access_Client_01')->accessToken;
-            $user->api_token = $token;
-            return new UserResource($user);
-        } else {
-            return abort(401, 'incorrect email or password');
-        }
+        if (!auth()->attempt($credentials)) return abort(401, 'incorrect email or password');
+
+
+        $user = User::where('email', $request->email)->first();
+        $token = auth()->user()->createToken('Personal_Access_Client_01')->accessToken;
+        $user->api_token = $token;
+        
+        UserResource::withoutWrapping();
+        return new UserResource($user);
+        
         
     }
     public function Logout(Request $request)
